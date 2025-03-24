@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
       <div class="create-account-container">
       <h1>AllergyAlly</h1>
       <h2>Create Account</h2>
-      <input type="button" value="Login" onclick="window.location.href='login.php'"><br><br>
+      <input type="button" value="Login" class="login-button" onclick="window.location.href='login.php'"><br><br>
       <form id="form" method="post" action="create_account.php">
       <label>Name: </label> <input type="text" id="name" name="name"><br><br>
       <label>Username(Must be an email address): </label> <input type="text" id="username" name="username"><br><br>
@@ -214,13 +214,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
               .then(response => response.text())
               .then(data =>
               {
-                if (data.includes("Congratulations!"))
+                const tempElement = document.createElement('div');
+                tempElement.innerHTML = data;
+
+                const successMessageElement = tempElement.querySelector('.success-message');
+
+                if (successMessageElement)
                 {
-                  messageContainer.innerHTML = `<p class="success-message">${data}</p>`;
+                  messageContainer.innerHTML = `<p class="success-message">${successMessageElement.textContent}</p>`;
                 }
                 else
                 {
-                  messageContainer.innerHTML = `<p class="error-message">${data}</p>`;
+                  const errorMessageElement = tempElement.querySelector('.error-message');
+
+                  if (errorMessageElement)
+                  {
+                    messageContainer.innerHTML = `<p class="error-message">${errorMessageElement.textContent}</p>`;
+                  }
+
+                  else
+                  {
+                    messageContainer.innerHTML = `<p class="error-message">An unexpected error occured! Please check the console for error details!</p>`;
+                  }
                 }
               })
               .catch(error =>
