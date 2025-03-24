@@ -1,0 +1,306 @@
+body 
+{
+    background: #ADD8E6;
+    font-family: sans-serif; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    margin: 0;
+}
+
+.login-container 
+{
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+    width: 400px; 
+}
+
+.create-account-container
+{
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+    width: 400px;
+    margin: 50px auto;
+}
+
+h1 
+{
+    text-align: center;
+    color: #00bcd4;
+    margin-bottom: 20px;
+}
+
+h2 
+{
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+label,
+.create-account-container label,
+.create-account-container legend
+{
+    display: block;
+    margin-bottom: 8px;
+    color: #000;
+    font-weight: bold;
+    text-align: left; 
+}
+
+input[type="text"],
+input[type="password"] 
+{
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus 
+{
+    outline: none;
+    border-color: #00bcd4; 
+    box-shadow: 0 0 5px rgba(0, 188, 212, 0.5); 
+}
+
+button,
+input[type="submit"],
+input[type="button"] {
+    background-color: #00bcd4;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease; 
+    width: 100%; 
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover 
+{
+    background-color: #008ba7; 
+}
+
+#togglePasswordBtn,
+#togglePasswordBtn1,
+#togglePasswordBtn2
+{
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+#togglePasswordBtn:hover 
+{
+    background-color: #e0e0e0;
+}
+
+#passwordError 
+{
+    color: #d32f2f; 
+    margin-top: 10px;
+    text-align: center;
+}
+
+center 
+{
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+center h1 
+{ 
+    color: #00bcd4;
+}
+
+
+input[type="button"][value="Create Account"] 
+{
+    background-color: #4caf50; 
+    color: white;
+    border-color: #4caf50;
+}
+
+input[type="button"][value="Create Account"]:hover 
+{
+    background-color: #388e3c;
+}
+
+.error-message
+{
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.create-account-container fieldset
+{
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.create-account-container legend
+{
+    font-weight: bold;
+    color: #000;
+}
+
+.create-account-container input[type="checkbox"],
+.create-account-container label[for]
+{
+    display: inline-block;
+    margin-right: 10px;
+    color: #000;
+}
+
+.create-account-container button[type="submit"],
+.create-account-container input[type="button"]
+{
+    width: 100%;
+}
+.success-message, .error-message
+{
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+
+.success-message
+{
+    color: green;
+    background-color: #e6ffe6;
+    border: 1px solid green;
+}
+
+.error-message
+{
+    color: red;
+    background-color: #ffe6e6;
+    border: 1px solid red;
+}
+
+#messageContainer
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 40px;
+    margin-bottom: 15px;
+}
+
+.center-container
+{
+    text-align: center;
+    width: 80%;
+}
+
+.greeting-text,
+.instructions-text
+{
+    color: white;
+}
+
+.button-container
+{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-container input[type="button"]
+{
+    width: auto;
+    margin: 0 10px;
+}
+
+.container
+{
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+h1
+{
+    color: #00008B;
+}
+
+h2
+{
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form
+{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+input[type="text"]
+{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 60%;
+    margin-right: 10px;
+}
+
+button[type="submit"]
+{
+    background-color: #000BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; 
+}
+
+button[type="submit"]:hover
+{
+    background-color: #0099CC;
+}
+
+#search-results
+{
+    margin-top: 20px;
+}
+
+#search-results table
+{
+    width: 100%;
+    padding: 8px;
+    text-align: left;
+}
+
+#search-results th
+{
+    background-color: #f2f2f2;
+}
