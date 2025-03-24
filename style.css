@@ -1,3 +1,4 @@
+
 body 
 {
     background: #ADD8E6;
@@ -8,18 +9,8 @@ body
     min-height: 100vh; 
     margin: 0;
 }
-
-.login-container 
-{
-    background-color: rgba(255, 255, 255, 0.9); 
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
-    text-align: center;
-    width: 400px; 
-}
-
-.create-account-container
+.create-account-container,
+.login-container
 {
     background-color: rgba(255, 255, 255, 0.9); 
     padding: 40px;
@@ -34,22 +25,23 @@ h1
 {
     text-align: center;
     color: #00bcd4;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 h2 
 {
     color: #333;
-    margin-top: 0;
-    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 label,
 .create-account-container label,
-.create-account-container legend
+.create-account-container legend,
+.login-container label
 {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     color: #000;
     font-weight: bold;
     text-align: left; 
@@ -58,13 +50,13 @@ label,
 input[type="text"],
 input[type="password"] 
 {
-    padding: 12px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: calc(100% - 24px);
+    width: calc(100% - 22px);
     box-sizing: border-box;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 input[type="text"]:focus,
@@ -80,7 +72,7 @@ input[type="submit"],
 input[type="button"] {
     background-color: #00bcd4;
     color: white;
-    padding: 12px 20px;
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -105,6 +97,8 @@ input[type="button"]:hover
     background-color: #f0f0f0;
     color: #333;
     border: 1px solid #ccc;
+    padding: 5px 10px;
+    font-size: 14px;
 }
 
 #togglePasswordBtn:hover 
@@ -118,19 +112,6 @@ input[type="button"]:hover
     margin-top: 10px;
     text-align: center;
 }
-
-center 
-{
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-center h1 
-{ 
-    color: #00bcd4;
-}
-
 
 input[type="button"][value="Create Account"] 
 {
@@ -154,8 +135,8 @@ input[type="button"][value="Create Account"]:hover
 .create-account-container fieldset
 {
     border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
     text-align: left;
 }
 
@@ -171,6 +152,7 @@ input[type="button"][value="Create Account"]:hover
     display: inline-block;
     margin-right: 10px;
     color: #000;
+    font-size: 14px;
 }
 
 .create-account-container button[type="submit"],
@@ -178,7 +160,8 @@ input[type="button"][value="Create Account"]:hover
 {
     width: 100%;
 }
-.success-message, .error-message
+.success-message, 
+.error-message
 {
     font-weight: bold;
     text-align: center;
@@ -201,106 +184,4 @@ input[type="button"][value="Create Account"]:hover
     color: red;
     background-color: #ffe6e6;
     border: 1px solid red;
-}
-
-#messageContainer
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 40px;
-    margin-bottom: 15px;
-}
-
-.center-container
-{
-    text-align: center;
-    width: 80%;
-}
-
-.greeting-text,
-.instructions-text
-{
-    color: white;
-}
-
-.button-container
-{
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.button-container input[type="button"]
-{
-    width: auto;
-    margin: 0 10px;
-}
-
-.container
-{
-    text-align: center;
-    width: 80%;
-    max-width: 600px;
-    padding: 20px;
-}
-
-h1
-{
-    color: #00008B;
-}
-
-h2
-{
-    color: #333;
-    margin-bottom: 20px;
-}
-
-form
-{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-input[type="text"]
-{
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 60%;
-    margin-right: 10px;
-}
-
-button[type="submit"]
-{
-    background-color: #000BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer; 
-}
-
-button[type="submit"]:hover
-{
-    background-color: #0099CC;
-}
-
-#search-results
-{
-    margin-top: 20px;
-}
-
-#search-results table
-{
-    width: 100%;
-    padding: 8px;
-    text-align: left;
-}
-
-#search-results th
-{
-    background-color: #f2f2f2;
 }
