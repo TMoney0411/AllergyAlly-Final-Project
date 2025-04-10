@@ -16,6 +16,7 @@
     </form>
     <div id="search-results">
     </div>
+    <?php include('disclaimer.php'); ?>
 
     <div id="allergy-warning-overlay"></div>
     <div id="allergy-warning">
@@ -167,7 +168,8 @@
           const allergyDataDiv = tempDiv.querySelector('#allergy-data');
 
           const allergensFound = allergyDataDiv.dataset.allergensFound === 'true';
-          const allergenArray = JSON.parse(allergyDataDiv.dataset.allergenArray || '[]');
+          let allergenArray = JSON.parse(allergyDataDiv.dataset.allergenArray || '[]');
+          
           const productName = allergyDataDiv.dataset.productName;
           const ingredientsText = allergyDataDiv.dataset.ingredientsText;
 
@@ -191,7 +193,15 @@
           }
           else if (productName && ingredientsText)
           {
-            searchResultsDiv.innerHTML = `<table><tr><th>Product Name</th><th>Ingredients</th></tr><tr><td>${productName}</td><td class='${(allergensFound ? 'allergy-warning-triggered' : 'allergy-safe')}'>${ingredientsText}</td></tr></table>`;
+            const displayIngredients = allergenArray.length === 0
+              ? `<span class="allergy-safe">No Allergies Found!</span>`
+              : ingredientsText;
+            
+            searchResultsDiv.innerHTML = `<table>
+              <tr><th>Product Name</th><th>Ingredients</th></tr>
+              <tr><td>${productName}</td><td>${displayIngredients}</td></tr>
+            </table>`;
+      
             searchResultsDiv.style.display = 'block';
             allergyWarningOverlay.style.display = 'none';
             allergyWarning.style.display = 'none';
@@ -220,17 +230,43 @@
 
             if (productName && ingredientsText)
             {
-              searchResultsDiv.innerHTML = `<table><tr><th>Product Name</th><th>Ingredients</th></tr><tr><td>${productName}</td><td class='${(allergensFound ? 'allergy-warning-triggered' : 'allergy-safe')}'>${ingredientsText}</td></tr></table>`;
+              let highlightedIngredients = '';
+              let parts = ingredientsText.split(new RegExp(`(${allergenArray.join('|')})`, 'gi'));
+              parts.forEach(part =>
+              {
+                if (allergenArray.some(allergen => part.toLowerCase().includes(allergen)))
+                {
+                  highlightedIngredients += `<span style="color: red;">${part}</span>`;
+                }
+                else
+                {
+                  highlightedIngredients += `<span>${part}</span>`;
+                }
+              });
+              searchResultsDiv.innerHTML = `<table><tr><th>Product Name</th><th>Ingredients</th></tr><tr><td>${productName}</td><td class='${(allergensFound ? 'allergy-warning-triggered' : 'allergy-safe')}'>${highlightedIngredients}</td></tr></table>`;
               searchResultsDiv.style.display = 'block';
             }
           });
-
           allergyWarningOverlay.addEventListener('click', function()
           {
             allergyWarningOverlay.style.display = 'none';
             allergyWarning.style.display = 'none';
+
             if (productName && ingredientsText)
             {
+              let highlightedIngredients = '';
+              let parts = ingredientsText.split(new RegExp(`(${allergenArray.join('|')})`, 'gi'));
+              parts.forEach(part =>
+              {
+                if (allergenArray.some(allergen => part.toLowerCase().includes(allergen)))
+                {
+                  highlightedIngredients += `<span style="color: red;">${part}</span>`;
+                }
+                else
+                {
+                  highlightedIngredients += `<span>${part}</span>`;
+                }
+              });
               searchResultsDiv.innerHTML = `<table><tr><th>Product Name</th><th>Ingredients</th></tr><tr><td>${productName}</td><td class='${(allergensFound ? 'allergy-warning-triggered' : 'allergy-safe')}'>${ingredientsText}</td></tr></table>`;
               searchResultsDiv.style.display = 'block';
             }
