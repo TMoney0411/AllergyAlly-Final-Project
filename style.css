@@ -264,6 +264,7 @@ input[type="button"][value="Create Account"]:hover
     border-bottom: 2px solid #ccc;
 }
 
+
 #search-results td:first-child
 {
     width: 150px;
@@ -277,7 +278,7 @@ input[type="button"][value="Create Account"]:hover
 
 .allergy-safe
 {
-    color: #28a745;
+    color: #00C853;
     font-weight: bold;
 }
 
@@ -380,6 +381,26 @@ input[type="button"][value="Create Account"]:hover
 
 .allergy-warning-triggered
 {
-    color: #ffc107;
     font-weight: bold;
+}
+.disclaimer-wrapper
+{
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 20px;
+    text-align: left;
+}
+p.disclaimer
+{
+    color: #000;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+.warning-icon
+{
+    font-size: 1.1em;
+    margin-right: 5px;
 }
