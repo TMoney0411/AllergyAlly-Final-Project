@@ -18,17 +18,15 @@ $name = $_SESSION['name'];
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="center-container">
-    <h1 id="allergy-ally-header">AllergyAlly</h1>
+  <div class="container"> <h1 id="allergy-ally-header">AllergyAlly</h1>
     <div id="greeting-container">
       <h2 id="greeting-text">Hello <?php echo htmlspecialchars($name) . "!"; ?></h2>
     </div>
-   <h3 id="instructions-text">Please select one of the buttons below: </h3>
+   <h3 id="instructions-text">Please select the button below: </h3>
    <div class="button-container">
       <input type="button" value="Search" onclick="window.location.href='food_finder.php'"><br><br>
-      <input type="button" value="Scan Barcode" onclick="window.location.href='scan_barcode.php'"><br><br>
     </div>
-  </div>
-  <div id="location"></div>
+    <?php include('disclaimer.php'); ?>
+  </div> <div id="location"></div>
 </body>
 </html>
