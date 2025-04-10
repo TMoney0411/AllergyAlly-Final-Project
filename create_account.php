@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   }
   else
   {
-    if (empty($allergies))
+    if (!empty($allergies))
     {
       $allergies_str = implode(", ", array_map('htmlspecialchars', $allergies));
     }
@@ -108,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         </fieldset><br>
         <p id="passwordError"></p>
         <button type="submit">Submit</button><br><br>
+        <?php include('disclaimer.php'); ?>
     </form>
     <div id="messageContainer"><?php echo isset($message) ? $message : ''; ?></div>
 
