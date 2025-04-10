@@ -78,23 +78,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <label>If you don't have an account, click here: </label> 
     <input type="button" value="Create Account" onclick="window.location.href='create_account.php'"><br><br>
     <form id="form" method="post" action="login.php">
-      <label for="username">Username: </label> 
+      <label for="username">Username (Must be an email address): </label> 
       <input type="text" id="username" name="username"><br><br>
       <label for="createPassword">Password: </label> 
       <input type="password" id="createPassword" name="createPassword">
       <button type="button" id="togglePasswordBtn">Show Password</button><br><br>
       <input type="submit" value="Submit">
+    
+      <?php
+      if (isset($password_error))
+      {
+        echo $password_error;
+      }
+      if (isset($username_error))
+      {
+        echo $username_error;
+      }
+      ?>
+
+      <?php include('disclaimer.php'); ?>
     </form>
-    <?php
-    if (isset($password_error))
-    {
-      echo $password_error;
-    }
-    if (isset($username_error))
-    {
-      echo $username_error;
-    }
-    ?>
   </div>
 
   <script>
