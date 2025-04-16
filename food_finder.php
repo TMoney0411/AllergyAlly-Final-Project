@@ -1,13 +1,16 @@
-
 <!DOCTYPE html>
 <html lang = "en">
 <head>
     <meta charset="UTF-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
   <div class="container">
+    <div class="settings-icon">
+      <i class="fas fa-cog" id="settingsButton"></i>
+    </div>
     <h1>AllergyAlly</h1>
     <h2 style = "color:black;">Please type in your barcode number below: </h2>
     <form id="form" method="post" action="food_finder.php">
@@ -144,6 +147,11 @@
       data-ingredients-text="<?php echo htmlspecialchars($search_results['ingredients_text'] ?? ''); ?>">
     </div>
   </div>
+  <div class="dropdown-menu" id="settingsDropdown">
+    <a href="edit_allergies.php">Edit Allergies</a>
+    <a href="add_allergies.php">Add Allergies</a>
+  </div>
+  <script src="settingsScript.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function()
     {
