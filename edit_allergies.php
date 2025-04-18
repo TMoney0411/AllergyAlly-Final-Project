@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
     
 
         $sql_select = "SELECT allergies, other FROM $table WHERE id = ?";
-        $stmt_select = $conn->prepare($sql);
+        $stmt_select = $conn->prepare($sql_select);
         $stmt_select->bind_param("i", $user_id);
         $stmt_select->execute();
         $result_select = $stmt_select->get_result();
@@ -75,14 +75,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
         $allergies_array = array_map('trim', explode(',', $current_allergies_str));
         $other_array = array_map('trim', explode(',', $current_other_str));
 
-        $deleted_from_allergies = false;
-        $deleted_from_other = false;
+        $updated_allergies_str = $current_allergies_str;
+        $updated_other_str = $current_other_str;
 
         $index_allergies = array_search($allergy_to_delete, $allergies_array);
         if ($index_allergies !== false)
         {
             unset($allergies_array[$index_allergies]);
-            $deleted_from_allergies = true;
+            $allergies_array = array_filter($allergies_array);
+            $updated_allergies_str = implode(',', $allergies_array);
         }
         else
         {
@@ -92,16 +93,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
                 unset($other_array[$index_other]);
                 $other_array = array_filter($other_array);
                 $updated_other_str = implode(',', $other_array);
-                $deleted_from_allergies = true;
             }
         }
 
-        $allergies_to_bind = isset($updated_allergies_str) ? $updated_allergies_str : $current_allergies_str;
-        $other_to_bind = isset($updated_other_str) ? $updated_other_str : $current_other_str;
-
         $sql_update = "UPDATE $table SET allergies = ?, other = ? WHERE id = ?";
         $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("ssi", $allergies_to_bind, $other_to_bind, $user_id);
+        $stmt_update->bind_param("ssi", $updated_allergies_str, $updated_other_str, $user_id);
 
         if ($stmt_update->execute())
         {
@@ -131,48 +128,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="mainContainer">
         <h1>Edit Allergies</h1>
         <div class="allergies-container">
-            <?php if (!empty($all_allergies)): ?>
-                <?php foreach ($all_allergies as $allergy_item): ?>
-                    <?php
-                    $sub_allergies = [$allergy_item];
-                    $delimiter = null;
-
-                    if (strpos($allergy_item, ',') !== false)
-                    {
-                        $sub_allergies = array_map('trim', explode($delimiter, $allergy_item));
-                    }
-
-                    foreach ($sub_allergies as $sub_allergy): ?>
-                        <div class="allergy-row">
-                            <div class="allergy-item"><?php echo ucfirst(htmlspecialchars($sub_allergy)); ?></div>
-                            <form method="post" action="edit_allergies.php">
-                                <input type="hidden" name="delete_allergy" value="<?php echo htmlspecialchars($sub_allergy); ?>">
-                                <button type="submit">Delete</button>
-                            </form>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
-                <?php if (!empty($success_message)): ?>
-                    <p class="success-message"><?php echo $success_message; ?></p>
-                <?php endif; ?>
-            <?php else: ?>
-                <div class="allergy-row empty-row">
-                    <div class="allergy-item"></div>
+            <?php foreach ($all_allergies as $allergy_item): ?>
+                <div class="allergy-row">
+                    <div class="allergy-item"><?php echo ucfirst(htmlspecialchars($allergy_item)); ?></div>
+                    <form method="post" action="edit_allergies.php">
+                        <input type="hidden" name="delete_allergy" value="<?php echo htmlspecialchars($allergy_item); ?>">
+                        <button type="submit">Delete</button>
+                    </form>
                 </div>
+            <?php endforeach; ?>
+                
             <?php if (!empty($success_message)): ?>
-                 <p class="success-message"><?php echo $success_message; ?></p>
+                <p class="success-message"><?php echo $success_message; ?></p>
             <?php endif; ?>
-        <?php endif; ?>
+        </div>
     </div>
 
     <div id="confirmationPopup" class="confirmation-popup">
         <div class="confirmation-popup-content">
             <div class="confirmation-popup-icon success">
-                <svg iewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" focusable="false">
-                    <path d="M2 20 L10 28 L30 8" />
+                <svg viewBox="-11 -11 55 50" fill="none" stroke="#4CAF50" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" aria-hidden="true" focusable="false">
+                    <path d="M5 22 L14 34 L40 6" />
                 </svg>
             </div>
             <p id="confirmationText" class="confirmation-popup-message">Are you sure you want to delete this allergy?</p>
@@ -200,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
             const form = button.closest('form');
             const allergyName = form.querySelector('input[name="delete_allergy"]').value;
             allergyToDelete = allergyName;
-            confirmationText.textContent = `Are you sure you want to delete ${allergyName}?`;
+            confirmationText.textContent = `Are you sure you want to delete ${capitalizeFirstLetter(allergyName)}?`;
             confirmationPopup.style.display = "block";
         }
 
