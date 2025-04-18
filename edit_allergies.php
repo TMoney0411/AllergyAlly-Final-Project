@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
                     <div class="allergy-item"><?php echo ucfirst(htmlspecialchars($allergy_item)); ?></div>
                     <form method="post" action="edit_allergies.php">
                         <input type="hidden" name="delete_allergy" value="<?php echo htmlspecialchars($allergy_item); ?>">
-                        <button type="submit">Delete</button>
+                        <button type="submit" class="delete-button">Delete</button>
                     </form>
                 </div>
             <?php endforeach; ?>
@@ -156,8 +156,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
             </div>
             <p id="confirmationText" class="confirmation-popup-message">Are you sure you want to delete this allergy?</p>
             <div class="confirmation-popup-buttons">
-                <button id="confirmNo" class="button confirmation-close-button">Close</button>
-                <button id="confirmYes" class="button confirmation-yes-button">Yes, delete</button>
+                <button id="confirmNo" class="confirmation-close-button">Close</button>
+                <button id="confirmYes" class="button confirmation-yes-button" style="background-color: #e53935; color: white;">Yes, delete</button>
             </div>
         </div>
     </div>
