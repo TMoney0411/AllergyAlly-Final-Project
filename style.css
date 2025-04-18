@@ -525,21 +525,21 @@ p.disclaimer
 
 .confirmation-popup-icon.success
 {
-    width: 60px;
-    height: 60px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 50%;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    border-radius: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 0 auto 15px;
     font-size: 2em;
 }
 
 .confirmation-popup-icon.success svg
 {
-    width: 60%;
-    height: 60%;
+    width: 40px;
+    height: 40px;
 }
 
 .confirmation-popup-message
@@ -570,18 +570,26 @@ p.disclaimer
     color: white;
 }
 
-.confirmation-buttons .confirmation-yes-button
-{
-    background-color: #2196F3;
-    color: white;
-}
-
 .confirmation-buttons .confirmation-close-button:hover
 {
     background-color: #666;
 }
 
-.confirmation-buttons .confirmation-yes-button:hover
+.delete-button
 {
-    background-color: #0b7dda;
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: auto;
+    max-width: 80px;
+}
+
+.delete-button:hover
+{
+    background-color: #c62828;
 }
