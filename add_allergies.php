@@ -55,5 +55,59 @@
             displayAllergySuggestions(filteredSuggestions);
             canAddAllergyMessage.style.display = 'none';
         });
+
+        function getInitialAllergies()
+        {
+            const checkboxes = document.querySelectorAll('input[name="allergies[]"]:checked');
+            const allergies = [];
+            checkedBoxes.forEach(box =>
+            {
+                allergies.push(box.value);
+            });
+            return allergies;
+        }
+
+        function displayAllergySuggestions(results)
+        {
+            allergySuggestionsList.innerHTML = '';
+            if (results.length > 0)
+            {
+                allergySuggestionsBox.style.display = 'block';
+                results.forEach(result =>
+                {
+                    const listItem = document.createElement('li');
+                    listItem.textConent = result;
+                    listItem.addEventListener('click', function()
+                    {
+                        const selectedAllergy = this.content;
+                        if (initialAllergies.map(a => a.toLowerCase()).includes(selectedAllergy.toLowerCase()) || currentAllergies.map(a => a.toLowerCase()).includes(selectedAllergy.toLowerCase()))
+                        {
+                            canAddAllergyMessage.style.display = 'block';
+                        }
+                        else
+                        {
+                            addAllergyToAddedList(selectedAllergy);
+                            newAllergyInput.value = '';
+                            allergySuggestionsBox.style.display = 'none';
+                            canAddAllergyMessage.style.display = 'none';
+                        }
+                    });
+                    allergySuggestionsList.appendChild(listItem);
+                });
+            }
+            else
+            {
+                allergySuggestionsBox.style.display = 'none';
+            }
+        }
+
+        function addAllergyToAddedList(allergy)
+        {
+            if(!currentAddedAllergies.map(a => a.toLowerCase()).includes(allergy.toLowerCase()))
+            {
+                currentAddedAllergies.push(allergy);
+                const listItem = document.createElement('li');
+            }
+        }
 </body>
 </html>
