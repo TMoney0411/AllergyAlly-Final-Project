@@ -107,6 +107,13 @@
             {
                 currentAddedAllergies.push(allergy);
                 const listItem = document.createElement('li');
+                listItem.textContent = allergy;
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.addEventListener('click', function()
+                {
+
+                });
             }
         }
 </body>
