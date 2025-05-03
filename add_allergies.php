@@ -59,14 +59,25 @@ $name = $_SESSION['name'];
 
         newAllergyInput.addEventListener('input', function()
         {
-            const query = this.value.toLowerCase();
-            const filteredSuggestions = allKnownAllergies.filter(allergy =>
-                allergy.toLowerCase().startsWith(query) && query.length > 0 &&
-                !initialAllergies.map(a => a.toLowerCase()).includes(allergy) &&
-                !currentAddedAllergies.map(a => a.toLowerCase()).includes(allergy)
-            );
-            displayAllergySuggestions(filteredSuggestions);
-            canAddAllergyMessage.style.display = 'none';
+            const inputText = this.value;
+            const allergyParts = inputText.split(',');
+            const currentQuery = allergyParts[allergyParts.length - 1].trim().toLowerCase();
+            if (currentQuery.length > 0)
+            {
+                const filteredSuggestions = allKnownAllergies.filter(allergy =>
+                    allergy.toLowerCase().includes(currentQuery) &&
+                    !initialAllergies.map(a => a.toLowerCase()).includes(allergy) &&
+                    !currentAddedAllergies.map(a => a.toLowerCase()).includes(allergy)
+                );
+                displayAllergySuggestions(filteredSuggestions, allergyParts);
+                canAddAllergyMessage.style.display = 'none';
+            }
+            else
+            {
+                allergySuggestionsBox.style.display = 'none';
+                canAddAllergyMessage.style.display = 'none';
+            }
+            
         });
 
         function getInitialAllergies()
@@ -80,7 +91,7 @@ $name = $_SESSION['name'];
             return allergies;
         }
 
-        function displayAllergySuggestions(results)
+        function displayAllergySuggestions(results, allergyParts)
         {
             allergySuggestionsList.innerHTML = '';
             if (results.length > 0)
@@ -92,18 +103,11 @@ $name = $_SESSION['name'];
                     listItem.textContent = result;
                     listItem.addEventListener('click', function()
                     {
-                        const selectedAllergy = this.textContent;
-                        if (initialAllergies.map(a => a.toLowerCase()).includes(selectedAllergy.toLowerCase()) || currentAddedAllergies.map(a => a.toLowerCase()).includes(selectedAllergy.toLowerCase()))
-                        {
-                            canAddAllergyMessage.style.display = 'block';
-                        }
-                        else
-                        {
-                            addAllergyToAddedList(selectedAllergy);
-                            newAllergyInput.value = '';
-                            allergySuggestionsBox.style.display = 'none';
-                            canAddAllergyMessage.style.display = 'none';
-                        }
+                        allergyParts[allergyParts.length - 1] = result;
+                        newAllergyInput.value = allergyParts.map(a => a.trim()).join(', ');
+                        allergySuggestionsBox.style.display = 'none';
+                        canAddAllergyMessage.style.display = 'none';
+                        newAllergyInput.focus();
                     });
                     allergySuggestionsList.appendChild(listItem);
                 });
@@ -179,7 +183,7 @@ $name = $_SESSION['name'];
                     console.error('Error saving allergies:', data.error);
                     const errorMessage = document.createElement('p');
                     errorMessage.textContent = 'Error saving allergies! Check the console for errors!';
-                    errorMessgae.style.color = 'red';
+                    errorMessage.style.color = 'red';
                     errorMessage.classList.add('error-status-message');
                     addAllergyContainer.appendChild(errorMessage);
                 }
