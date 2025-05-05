@@ -32,7 +32,6 @@ $stmt = $conn->prepare("SELECT allergies FROM account_information WHERE username
 $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
-
 $addedAllergies = [];
 $allKnownAllergies = [];
 
@@ -40,8 +39,6 @@ $allKnownAllergies = [];
 if ($result->num_rows > 0)
 {
     $row = $result->fetch_assoc();
-
-    
     if (!empty($row['allergies']))
     {
         $addedAllergies = explode(',', $row['allergies']);
@@ -51,6 +48,24 @@ if ($result->num_rows > 0)
 }
 
 $stmt->close();
+
+$allergyQuery = $conn->query("SELECT allergies FROM account_information");
+
+if ($allergyQuery)
+{
+    while ($row = $allergyQuery->fetch_assoc())
+    {
+        if (!empty($row['allergies']))
+        {
+            $all = explode(',', $row['allergies']);
+            $all = array_map('trim', $all);
+            $allKnownAllergies = array_merge($allKnownAllergies, $all);
+        }
+    }
+}
+
+$allKnownAllergies = array_values(array_unique(array_filter($allKnownAllergies)));
+
 $conn->close();
 
 
@@ -58,7 +73,7 @@ $conn->close();
 $response = 
 [
     'added' => $addedAllergies,
-    'all' => array_values(array_unique($allKnownAllergies)),
+    'all' => $allKnownAllergies,
 ];
 
 echo json_encode($response);
