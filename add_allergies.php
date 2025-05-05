@@ -330,8 +330,10 @@ $name = $_SESSION['name'];
                                         const allergiesTablesContainer = document.getElementById('allergyTablesContainer');
                                         allergyTablesContainer.innerHTML = '';
 
-                                        displayAddedAllergiesTable(savedAllergies);
-                                        displayAllKnownAllergiesTable(allergiesData.all, savedAllergies);
+                                        displayAddedAllergiesTable(allergiesData.added);
+
+                                        displayAddedAllergiesTable(allergiesData.all);
+
                                         displaySaveSuccessMessage();
                                     })
                                     .catch(error => console.error('Error fetching allergies:', error))
@@ -375,39 +377,38 @@ $name = $_SESSION['name'];
 
                             function displayAllKnownAllergiesTable(allAllergies)
                             {
+                                console.log('All allergies:', allAllergies);
                                 const container = document.getElementById('allergyTablesContainer');
 
                                 const table = document.createElement('table');
                                 table.classList.add('allergy-table');
 
                                 const headerRow = document.createElement('tr');
-                                const headerCell = document.createElement('th');
-                                headerCell.textContent = 'All Allergies';
-                                headerRow.appendChild(headerCell);
+                                const headerCell1 = document.createElement('th');
+                                headerCell1.textContent = 'All Allergies';
+                                const headerCell2 = document.createElement('th');
+                                headerCell2.textContent = 'Added Allergies';
+                                headerRow.appendChild(headerCell1);
+                                headerRow.appendChild(headerCell2);
                                 table.appendChild(headerRow);
 
-                                if (allAllergies.length === 0)
+                                const maxLength = Math.max(allergiesData.all.length, allergiesData.added.length);
+                                for (let i = 0; i < maxLength; i++)
                                 {
                                     const row = document.createElement('tr');
-                                    const cell = document.createElement('td');
-                                    cell.innerHTML = "<span class='allergy-safe'>No Allergies Found!</span>";
-                                    row.appendChild(cell);
-                                    table.appendChild(row);
+                                }
+
+                                const cell1 = document.createElement('td');
+                                if (i < allergiesData.all.length)
+                                {
+                                    cell1.textContent = allergiesData.all[i];
                                 }
                                 else
                                 {
-                                    allAllergies.forEach(allergy =>
-                                    {
-                                        const row = document.createElement('tr');
-                                        const cell = document.createElement('td');
-                                        cell.textContent = allergy;
-                                        row.appendChild(cell);
-                                        table.appendChild(row);
-                                    });
+                                    cell1.textContent = '';
                                 }
 
-                                container.appendChild(table);
-                            }
+                                
 
                             function displaySaveSuccessMessage()
                             {
