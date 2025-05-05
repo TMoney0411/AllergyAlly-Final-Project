@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Content-Type: application/json');
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -32,11 +33,15 @@ $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$added_allergies = [];
+$addedAllergies = [];
+$allKnownAllergies = [];
+
+
 if ($result->num_rows > 0)
 {
     $row = $result->fetch_assoc();
-    $addedAllergies = [];
+
+    
     if (!empty($row['allergies']))
     {
         $addedAllergies = explode(',', $row['allergies']);
@@ -48,15 +53,14 @@ if ($result->num_rows > 0)
 $stmt->close();
 $conn->close();
 
-$allKnownAllergies = ["Dairy", "Fish", "Mustard", "Celery", "Avocado", "Kiwi", "Latex", "Corn", "Coconut", "Rice", "Oats", "Yeast"];
+
 
 $response = 
 [
     'added' => $addedAllergies,
-    'all' => $allKnownAllergies,
+    'all' => array_values(array_unique($allKnownAllergies)),
 ];
 
-header('Content-Type: application/json');
 echo json_encode($response);
 exit;
 
