@@ -66,13 +66,13 @@ $stmt_update = $conn->prepare("UPDATE account_information SET allergies = ? WHER
 $stmt_update->bind_param("ss", $combinedAllergiesString, $name);
 $stmt_update->execute();
 
-if ($stmt_update->affected_rows >= 0 || $stmt_update->warning_count === 0)
+if ($stmt_update->affected_rows > 0)
 {
     echo json_encode(['success' => true]);
 }
 else
 {
-    echo json_encode(['success' => false, 'error' => 'Error updating allergies']);
+    echo json_encode(['success' => false, 'error' => 'Error updating allergies. Affected rows: ' . $stmt_update->affected_rows . '. MySQL error: ' . $stmt_update->error]);
 }
 
 $stmt_update->close();
