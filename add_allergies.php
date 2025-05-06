@@ -350,7 +350,7 @@ $name = $_SESSION['name'];
                                                 successMessage.classList.add('fade-out');
                                                 setTimeout(() => successMsg.classList.add('hidden'), 1000);
                                             }
-                                        }, 3000);
+                                        }, 5000);
                                     })
                                     .catch(error => console.error('Error fetching allergies:', error))
                             }
