@@ -8,7 +8,6 @@ if (!isset($_SESSION['user_id']))
 }
 
 $user_id = $_SESSION['user_id'];
-
 $servername = 'localhost';
 $db_username = 'root';
 $db_password = '';
@@ -22,7 +21,6 @@ try
     {
         die("Connect failed: " . $conn->connect_error);
     }
-
 
     $sql = "SELECT allergies, other FROM $table WHERE id = ?";
     $stmt = $conn->prepare($sql);
@@ -60,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
         {
             die("Connect failed: " . $conn->connect_error);
         }
-    
 
         $sql_select = "SELECT allergies, other FROM $table WHERE id = ?";
         $stmt_select = $conn->prepare($sql_select);
@@ -129,18 +126,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
 </head>
 <body>
     <div class="container" id="mainContainer">
-        <h1>Edit Allergies</h1>
+        <h1>Delete Allergies</h1>
         <div class="allergies-container">
-            <?php foreach ($all_allergies as $allergy_item): ?>
+            <?php if (empty($all_allergies)): ?>
+                <p class="no-allergies">No allergies listed!</p>
+            <?php else: ?>
+                <?php foreach ($all_allergies as $allergy_item): ?>
                 <div class="allergy-row">
                     <div class="allergy-item"><?php echo ucfirst(htmlspecialchars($allergy_item)); ?></div>
-                    <form method="post" action="edit_allergies.php">
+                    <form method="post" action="delete_allergies.php">
                         <input type="hidden" name="delete_allergy" value="<?php echo htmlspecialchars($allergy_item); ?>">
                         <button type="submit" class="delete-button">Delete</button>
                     </form>
                 </div>
             <?php endforeach; ?>
-                
+            <?php endif; ?>
+               
             <?php if (!empty($success_message)): ?>
                 <p class="success-message"><?php echo $success_message; ?></p>
             <?php endif; ?>
@@ -162,10 +163,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
         </div>
     </div>
 
-    <form id="allergiesForm" method="post" action="edit_allergies.php"></form>
+    <form id="allergiesForm" method="post" action="delete_allergies.php"></form>
 
     <script>
-        
         const confirmationPopup = document.getElementById('confirmationPopup');
         const confirmationText = document.getElementById('confirmationText');
         const confirmationYesButton = document.getElementById('confirmYes');
@@ -190,15 +190,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
             rowToDelete = null;
         }
 
+        function fadeOutAndRemove(element)
+        {
+            element.classList.add('fade-out');
+            setTimeout(() =>
+            {
+                element.remove();
+            }, 300);
+        }
+
         confirmationYesButton.addEventListener('click', () =>
         {
             if (allergyToDelete && rowToDelete)
             {
                 rowToDelete.remove();
-                fetch('edit_allergies.php', 
+                fetch('delete_allergies.php',
                 {
                     method: 'POST',
-                    headers: 
+                    headers:
                     {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -210,7 +219,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
                     const successMessageContainer = document.querySelector('.allergies-container');
                     if (successMessageContainer)
                     {
-                        successMessageContainer.insertAdjacentHTML('beforeend', `<p class="success-message">Allergy: ${capitalizeFirstLetter(allergyToDelete)} deleted successfully!</p>`);
+                        const successMessage = document.createElement('p');
+                        successMessage.className = 'success-message temporary';
+                        successMessage.textContent = `Allergy: ${capitalizeFirstLetter(allergyToDelete)} deleted successfully!`
+                        successMessageContainer.appendChild(successMessage);
+                        setTimeout(() =>
+                        {
+                            fadeOutAndRemove(successMessage);
+                        }, 2000);
                     }
 
                     hideConfirmation();
@@ -225,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
         });
 
         confirmationNoButton.addEventListener('click', hideConfirmation);
-                
+               
         function capitalizeFirstLetter(string)
         {
             return string.charAt(0).toUpperCase() + string.slice(1);
