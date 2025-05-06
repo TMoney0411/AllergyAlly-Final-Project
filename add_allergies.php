@@ -334,6 +334,23 @@ $name = $_SESSION['name'];
                                         displayAddedAllergiesTable(savedAllergies);
                                         displayAllKnownAllergiesTable(allergiesData.all, savedAllergies);
                                         displaySaveSuccessMessage();
+
+                                        setTimeout(() =>
+                                        {
+                                            const tables = allergyTablesContainer.querySelectorAll('table');
+                                            tables.forEach(table =>
+                                            {
+                                                table.classList.add('fade-out');
+                                                setTimeout(() => table.classList.add('hidden'), 1000);
+                                            });
+
+                                            const successMessage = document.getElementById('saveSuccessMessage');
+                                            if (successMessage)
+                                            {
+                                                successMessage.classList.add('fade-out');
+                                                setTimeout(() => successMsg.classList.add('hidden'), 1000);
+                                            }
+                                        }, 3000);
                                     })
                                     .catch(error => console.error('Error fetching allergies:', error))
                             }
@@ -422,12 +439,21 @@ $name = $_SESSION['name'];
                             {
                                 const messageContainer = document.getElementById('saveMessageContainer');
                                 messageContainer.innerHTML = '';
+
                                 const successMessage = document.createElement('p');
                                 successMessage.textContent = 'Allergies saved successfully!';
                                 successMessage.style.color = 'green';
                                 successMessage.style.fontWeight = 'bold';
                                 successMessage.style.marginTop = '10px';
+
                                 messageContainer.appendChild(successMessage);
+
+                                setTimeout(() =>
+                                {
+                                    successMessage.classList.add('fade-out');
+
+                                    setTimeout(() =>successMessage.classList.add('hidden'), 1000);
+                                }, 5000);
                             }
 
                             fetchAndDisplayAllergies();
