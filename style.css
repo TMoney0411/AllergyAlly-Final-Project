@@ -699,3 +699,14 @@ p.disclaimer
     font-weight: bold;
 }
 
+.fade-out
+{
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.hidden
+{
+    display: none;
+}
+
