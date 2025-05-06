@@ -666,3 +666,36 @@ p.disclaimer
     border-radius: 5px 5px 0 0;
     box-sizing: border-box;
 }
+
+.allergy-table-container
+{
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.allergy-table
+{
+    border-collapse: collapse;
+    width: 20px;
+    width: 100%;
+}
+
+.allergy-table th
+{
+    background-color: #f2f2f2;
+    padding: 10px;
+}
+
+.allergy-table td
+{
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.allergy-safe
+{
+    color: green;
+    font-weight: bold;
+}
+
