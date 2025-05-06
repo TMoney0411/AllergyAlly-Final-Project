@@ -26,6 +26,8 @@ $name = $_SESSION['name'];
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="backButton" class="back-button">Back</button></div>
+
     <div class="container" id="mainContainer">
         <div class="add-allergy-container">
             <h1>Add New Allergies</h1>
@@ -107,6 +109,11 @@ $name = $_SESSION['name'];
     </div>
 
     <script>
+        document.getElementById('backButton').addEventListener('click', function()
+        {
+            window.location.href = 'product_options';
+        });
+
         document.addEventListener('DOMContentLoaded', function()
         {
             const newAllergyInput = document.getElementById('newAllergyInput');
