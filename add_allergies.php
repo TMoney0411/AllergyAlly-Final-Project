@@ -111,7 +111,7 @@ $name = $_SESSION['name'];
     <script>
         document.getElementById('backButton').addEventListener('click', function()
         {
-            window.location.href = 'product_options';
+            window.location.href = 'product_options.php';
         });
 
         document.addEventListener('DOMContentLoaded', function()
