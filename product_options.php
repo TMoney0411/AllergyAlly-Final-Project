@@ -19,9 +19,11 @@ $name = $_SESSION['name'];
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
+  <button id="logoutButton" class="logout-button-styled">Logout</button>
+
   <div class="container"> 
     <div class="settings-icon">
-      <i class="fas fa-cog" id="settingsButton"></i>
+      <i id="settingsButton" class="fas fa-cog" ></i>
     </div>
     <h1 id="allergy-ally-header">AllergyAlly</h1>
     <div id="greeting-container">
@@ -35,9 +37,15 @@ $name = $_SESSION['name'];
   </div> 
   <div id="location"></div>
   <div class="dropdown-menu" id="settingsDropdown">
-    <a href="edit_allergies.php">Edit Allergies</a>
+    <a href="delete_allergies.php">Delete Allergies</a>
     <a href="add_allergies.php">Add Allergies</a>
   </div>
   <script src="settingsScript.js"></script>
+  <script>
+    document.getElementById('logoutButton').addEventListener('click', function()
+    {
+      window.location.href = 'logout.php';
+    });
+  </script>
 </body>
 </html>
