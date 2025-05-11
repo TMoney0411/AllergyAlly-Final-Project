@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
+  <div id="backButton" class="back-button">Back</button></div>
+
   <div class="container">
     <div class="settings-icon">
       <i class="fas fa-cog" id="settingsButton"></i>
@@ -153,6 +155,11 @@
   </div>
   <script src="settingsScript.js"></script>
   <script>
+    document.getElementById('backButton').addEventListener('click', function()
+    {
+      window.location.href = 'product_options.php';
+    });
+    
     document.addEventListener('DOMContentLoaded', function()
     {
       const form = document.getElementById('form');
