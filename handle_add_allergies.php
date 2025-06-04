@@ -61,19 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && stripos($_SERVER['CONTENT_TYPE'], '
 
         foreach ($newAllergies as $allergy)
         {
-            if (in_array($allergy, $base_known_allergies))
+            
+            if (!in_array($allergy, $allergies_to_save))
             {
-                if (!in_array($allergy, $allergies_to_save))
-                {
-                    $allergies_to_save[] = $allergy;
-                }
+                $allergies_to_save[] = $allergy;
             }
-            else
+            
+            if (($key = array_search($allergy, $other_to_save)) !== false)
             {
-                if (!in_array($allergy, $other_to_save))
-                {
-                    $other_to_save[] = $allergy;
-                }
+                unset($other_to_save[$key]);
             }
         }
 
