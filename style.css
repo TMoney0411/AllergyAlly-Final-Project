@@ -142,6 +142,7 @@ input[type="button"][value="Create Account"]:hover
     color: red;
     margin-top: 10px;
     text-align: center;
+    display: none;
 }
 
 .create-account-container fieldset
@@ -753,4 +754,28 @@ p.disclaimer
 .logout-button-styled:hover
 {
     background-color: #d32f2f;
+}
+
+.logo
+{
+    max-width: 200px; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto 10px auto;
+}
+
+.edit-severity-container
+{
+    background-color: white;
+    padding: 20px 30px;
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+#usernameError
+{
+    display: none;
+    width: 100%;
 }
