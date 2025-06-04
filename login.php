@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
   </head>
 <body>
   <div class="login-container">
-    <h1>AllergyAlly</h1>
+    <img src="allergyally_logo.png" alt="AllergyAlly Logo" class="logo">
     <h2>Login</h2>
     <label>If you don't have an account, click here: </label> 
     <input type="button" value="Create Account" onclick="window.location.href='create_account.php'"><br><br>
