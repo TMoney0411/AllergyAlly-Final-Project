@@ -26,9 +26,11 @@ $name = $_SESSION['name'];
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="backButton" class="back-button">Back</button></div>
+    
+    <button id="backButton" class="back-button">Back</button>
 
     <div class="container" id="mainContainer">
+        <img src="allergyally_logo.png" alt="AllergyAlly Logo" class="logo">
         <div class="add-allergy-container">
             <h1>Add New Allergies</h1>
             <p class="input-description">Please enter your new allergy or allergies in the box below(If adding more than one allergy, separate them by a comma)</p>
@@ -467,12 +469,23 @@ $name = $_SESSION['name'];
                         }
                         else
                         {
-                            console.error('Error saving allergies:', data.error);
-                            const errorMessage = document.createElement('p');
-                            errorMessage.textContent = 'Error saving allergies! Check the console for errors!'
-                            errorMessage.style.color = 'red';
-                            errorMessage.classList.add('error-status-message');
-                            addAllergyContainer.appendChild(errorMessage);
+                            if (data.error && data.error.startsWith("Can't add allergy! Already added"))
+                            {
+                                const errorMessage = document.createElement('p');
+                                errorMessage.textContent = data.error;
+                                errorMessage.style.color = 'red';
+                                errorMessage.classList.add('error-status-message');
+                                addAllergyContainer.appendChild(errorMessage);
+                            }
+                            else
+                            {
+                                console.error('Error saving allergies:', data.error);
+                                const errorMessage = document.createElement('p');
+                                errorMessage.textContent = 'Error saving allergies! ' + (data.error || '');
+                                errorMessage.style.color = 'red';
+                                errorMessage.classList.add('error-status-message');
+                                addAllergyContainer.appendChild(errorMessage);
+                            }
                         }
                     })
                     .catch(error =>
