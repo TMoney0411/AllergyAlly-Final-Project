@@ -25,7 +25,7 @@ $name = $_SESSION['name'];
     <div class="settings-icon">
       <i id="settingsButton" class="fas fa-cog" ></i>
     </div>
-    <h1 id="allergy-ally-header">AllergyAlly</h1>
+    <img src="allergyally_logo.png" alt="AllergyAlly Logo" class="logo">
     <div id="greeting-container">
       <h2 id="greeting-text">Hello <?php echo htmlspecialchars($name) . "!"; ?></h2>
     </div>
@@ -39,6 +39,7 @@ $name = $_SESSION['name'];
   <div class="dropdown-menu" id="settingsDropdown">
     <a href="delete_allergies.php">Delete Allergies</a>
     <a href="add_allergies.php">Add Allergies</a>
+    <a href="edit_severity.php">Edit Severity</a>
   </div>
   <script src="settingsScript.js"></script>
   <script>
