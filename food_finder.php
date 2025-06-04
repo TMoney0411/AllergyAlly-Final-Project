@@ -13,7 +13,7 @@
     <div class="settings-icon">
       <i class="fas fa-cog" id="settingsButton"></i>
     </div>
-    <h1>AllergyAlly</h1>
+    <img src="allergyally_logo.png" alt="AllergyAlly Logo" class="logo">
     <h2 style = "color:black;">Please type in your barcode number below: </h2>
     <form id="form" method="post" action="food_finder.php">
       <input type="text" id="searchHere" name="searchHere">
