@@ -26,10 +26,10 @@ if ($conn->connect_error)
     exit;
 }
 
-$username = $_SESSION['name'];
+$user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT allergies FROM account_information WHERE username = ?");
-$stmt->bind_param("s", $username);
+$stmt = $conn->prepare("SELECT allergies FROM account_information WHERE id = ?");
+$stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $addedAllergies = [];
@@ -44,31 +44,13 @@ if ($result->num_rows > 0)
         $addedAllergies = explode(',', $row['allergies']);
         $addedAllergies = array_map('trim', $addedAllergies);
         $addedAllergies = array_filter($addedAllergies);
+
+        $allKnownAllergies = $addedAllergies;
     }
 }
 
 $stmt->close();
-
-$allergyQuery = $conn->query("SELECT allergies FROM account_information");
-
-if ($allergyQuery)
-{
-    while ($row = $allergyQuery->fetch_assoc())
-    {
-        if (!empty($row['allergies']))
-        {
-            $all = explode(',', $row['allergies']);
-            $all = array_map('trim', $all);
-            $allKnownAllergies = array_merge($allKnownAllergies, $all);
-        }
-    }
-}
-
-$allKnownAllergies = array_values(array_unique(array_filter($allKnownAllergies)));
-
 $conn->close();
-
-
 
 $response = 
 [
@@ -78,5 +60,4 @@ $response =
 
 echo json_encode($response);
 exit;
-
 ?>
