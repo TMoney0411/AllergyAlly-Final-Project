@@ -127,6 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
 <body>
     <div id="backButton" class="back-button">Back</button></div>
     <div class="container" id="mainContainer">
+        <img src="allergyally_logo.png" alt="AllergyAlly Logo" class="logo">
         <h1>Delete Allergies</h1>
         <div class="allergies-container">
             <?php if (empty($all_allergies)): ?>
@@ -169,9 +170,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_allergy']))
     <script>
         document.getElementById('backButton').addEventListener('click', function()
         {
-            window.location.href = 'product_options';
+            window.location.href = 'product_options.php';
         });
-        
+
         const confirmationPopup = document.getElementById('confirmationPopup');
         const confirmationText = document.getElementById('confirmationText');
         const confirmationYesButton = document.getElementById('confirmYes');
