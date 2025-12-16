@@ -9,7 +9,7 @@ if (!isset($_SESSION['name'])) {
 $name = $_SESSION['name'];
 $severity_symptoms = [];
 
-// --- Database Setup ---
+/* ---------- DATABASE SETUP ---------- */
 $servername = 'localhost';
 $db_username = 'root';
 $db_password = '';
@@ -29,7 +29,6 @@ if (isset($_SESSION['user_id'])) {
 
     if ($row = $result->fetch_assoc()) {
       $symptoms_string = $row['severity_symptoms'] ?? '';
-
       $normalized_string = str_replace(["\r\n", "\r", "\n"], ', ', $symptoms_string);
       $pairs = array_filter(array_map('trim', explode(',', $normalized_string)));
 
@@ -50,45 +49,34 @@ if (isset($_SESSION['user_id'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Severity</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Severity</title>
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <style>
-    #instructions-text {
-      margin-top: 0;
-      margin-bottom: 15px;
-    }
-
-    .logo {
-      display: block;
-      margin-bottom: 0;
-    }
-
-    .severity-input-group {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .severity-input-group label {
-      font-weight: bold;
-      flex-grow: 1;
-    }
-
-    .severity-input-group input[type="number"] {
-      width: 50px;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      text-align: center;
-    }
-  </style>
+<style>
+.centered-content { max-width: 250px; margin: 0 auto; }
+.severity-input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.severity-input-group label {
+  font-weight: bold;
+  margin-right: 15px;
+}
+.severity-input-group input {
+  width: 50px;
+  text-align: center;
+}
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+</style>
 </head>
 
 <body>
@@ -96,100 +84,205 @@ if (isset($_SESSION['user_id'])) {
 <button id="backButton" class="back-button">Back</button>
 
 <div class="container">
-
   <div class="settings-icon">
     <i id="settingsButton" class="fas fa-cog"></i>
   </div>
 
-  <img src="allergyally_logo.png" alt="AllergyAlly Logo" class="logo">
+  <img src="allergyally_logo.png" class="logo" alt="Logo">
 
-  <h3 id="instructions-text">Please change your severity below</h3>
+  <h3>Please change your severity below</h3>
 
   <form id="severityEditForm" action="edit_severity.php" method="POST">
+    <div class="centered-content">
 
-    <?php if (!empty($severity_symptoms)): ?>
       <?php foreach ($severity_symptoms as $allergy => $severity): ?>
-
         <div class="severity-input-group">
           <label for="<?= htmlspecialchars($allergy) ?>">
             <?= htmlspecialchars(ucfirst($allergy)) ?>:
           </label>
-
-          <input
-            type="number"
-            id="<?= htmlspecialchars($allergy) ?>"
-            name="allergy_severity[<?= htmlspecialchars($allergy) ?>]"
-            value="<?= htmlspecialchars($severity) ?>"
-            min="1"
-            max="10"
-            required
-          >
+          <input type="number"
+                 id="<?= htmlspecialchars($allergy) ?>"
+                 name="allergy_severity[<?= htmlspecialchars($allergy) ?>]"
+                 value="<?= htmlspecialchars($severity) ?>"
+                 min="1" max="10" required>
         </div>
-
       <?php endforeach; ?>
 
-      <!-- 🔹 Hidden until change -->
       <div class="button-container"
            id="saveButtonContainer"
-           style="display: none; margin-top: 20px;">
+           style="display:none; margin-top:20px;">
         <input type="submit" value="Save Severity Changes">
       </div>
 
-    <?php else: ?>
-      <p>No current allergies found.</p>
-    <?php endif; ?>
-
+    </div>
   </form>
 
   <?php include('disclaimer.php'); ?>
+
+  <!-- ✅ SUCCESS MESSAGE -->
+  <?php if (!empty($_SESSION['severity_success'])): ?>
+    <div id="severitySuccessMessage" style="margin-top:15px;">
+      <?php foreach ($_SESSION['severity_success'] as $change): ?>
+        <p style="color:green; font-weight:bold;">
+          <?= htmlspecialchars($change['allergy']) ?>
+          severity successfully changed to
+          <?= htmlspecialchars($change['severity']) ?>!
+        </p>
+      <?php endforeach; ?>
+    </div>
+    <?php unset($_SESSION['severity_success']); ?>
+  <?php endif; ?>
+
+</div>
+
+<div id="confirmationPopup" class="confirmation-popup" style="display:none;">
+  <div class="confirmation-popup-content">
+    <div class="confirmation-popup-icon success">
+      <svg viewBox="-11 -11 55 50" fill="none"
+           stroke="#4CAF50"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           stroke-width="7"
+           aria-hidden="true"
+           focusable="false">
+        <path d="M5 22 L14 34 L40 6" />
+      </svg>
+    </div>
+
+    <p id="confirmationText" class="confirmation-popup-message"></p>
+
+    <div class="confirmation-popup-buttons">
+      <button id="confirmNo" class="confirmation-close-button">
+        Close
+      </button>
+      <button id="confirmYes"
+              class="button confirmation-yes-button"
+              style="background-color:#4CAF50;color:white;">
+        Yes, Save
+      </button>
+    </div>
+  </div>
 </div>
 
 <div class="dropdown-menu" id="settingsDropdown">
-  <a href="delete_allergies.php">Delete Allergies</a>
   <a href="add_allergies.php">Add Allergies</a>
-</div>
-
+  <a href="delete_allergies.php">Delete Allergies</a>
 <script src="settingsScript.js"></script>
 
 <script>
-  // Back button
-  document.getElementById('backButton').addEventListener('click', () => {
-    window.location.href = 'product_options.php';
-  });
-
-  // Settings dropdown
-  document.addEventListener('DOMContentLoaded', () => {
-    const settingsButton = document.getElementById('settingsButton');
-    const settingsDropdown = document.getElementById('settingsDropdown');
-
-    settingsButton.addEventListener('click', () => {
-      settingsDropdown.classList.toggle('show');
-    });
-
-    window.addEventListener('click', e => {
-      if (!e.target.closest('.settings-icon') &&
-          !e.target.closest('.dropdown-menu')) {
-        settingsDropdown.classList.remove('show');
-      }
-    });
-  });
-
-  // ✅ SHOW SAVE BUTTON WHEN ANY VALUE CHANGES
-  document.addEventListener('DOMContentLoaded', function () {
-    const inputs = document.querySelectorAll('#severityEditForm input[type="number"]');
-    const saveButtonContainer = document.getElementById('saveButtonContainer');
-
-    inputs.forEach(input => {
-      input.dataset.originalValue = input.value;
-
-      input.addEventListener('input', function () {
-        if (input.value !== input.dataset.originalValue) {
-          saveButtonContainer.style.display = 'block';
-        }
-      });
-    });
-  });
+document.getElementById('backButton').addEventListener('click', function () {
+  window.location.href = 'product_options.php';
+});
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('severityEditForm');
+  const inputs = document.querySelectorAll('input[type="number"]');
+  const saveBtn = document.getElementById('saveButtonContainer');
+  const popup = document.getElementById('confirmationPopup');
+  const popupText = document.getElementById('confirmationText');
+  let allowSubmit = false;
+
+  inputs.forEach(i => i.dataset.original = i.value);
+
+  function checkChanges() {
+    saveBtn.style.display =
+      [...inputs].some(i => i.value !== i.dataset.original)
+        ? 'block' : 'none';
+  }
+
+  inputs.forEach(i => i.addEventListener('input', checkChanges));
+
+  function buildMessage() {
+    const changes = [];
+    inputs.forEach(i => {
+      if (i.value !== i.dataset.original) {
+        changes.push(`${i.id.charAt(0).toUpperCase() + i.id.slice(1)} to ${i.value}`);
+      }
+    });
+
+    if (changes.length === 1)
+      return `Are you sure you want to change ${changes[0]}?`;
+
+    if (changes.length === 2)
+      return `Are you sure you want to change ${changes[0]} and ${changes[1]}?`;
+
+    return `Are you sure you want to change ${changes.slice(0,-1).join(', ')}, and ${changes.at(-1)}?`;
+  }
+
+  form.addEventListener('submit', e => {
+    if (!allowSubmit) {
+      e.preventDefault();
+      popupText.textContent = buildMessage();
+      popup.style.display = 'block';
+    }
+  });
+
+  document.getElementById('confirmYes').onclick = () => 
+  {
+    popup.style.display = 'none';
+
+    const formData = new FormData(form);
+
+    fetch('update_severity.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success) {
+        alert('Failed to save changes.');
+        return;
+      }
+
+      // Remove old messages
+      document.getElementById('severitySuccessMessage')?.remove();
+
+      const msgDiv = document.createElement('div');
+      msgDiv.id = 'severitySuccessMessage';
+      msgDiv.style.marginTop = '15px';
+
+      data.changes.forEach(change => {
+        const p = document.createElement('p');
+        p.style.color = 'green';
+        p.style.fontWeight = 'bold';
+        p.textContent = `${change.allergy} severity successfully changed to ${change.severity}!`;
+        msgDiv.appendChild(p);
+      });
+
+      // Insert BELOW disclaimer
+      document.querySelector('.container')
+        .appendChild(msgDiv);
+
+      // Update original values so Save button hides again
+      inputs.forEach(i => i.dataset.original = i.value);
+      saveBtn.style.display = 'none';
+
+      // Fade out
+      setTimeout(() => {
+        msgDiv.classList.add('fade-out');
+
+        setTimeout(() => {
+          msgDiv.remove();
+        }, 2000);
+
+      }, 2000);
+    });
+  };
+  document.getElementById('confirmNo').onclick = () => {
+    popup.style.display = 'none';
+  };
+
+  /* Fade success message */
+  setTimeout(() => {
+    const msg = document.getElementById('severitySuccessMessage');
+    if (msg) {
+      msg.classList.add('fade-out');
+      setTimeout(() => msg.remove(), 1000);
+    }
+  }, 7000);
+});
+</script>
 </body>
 </html>
